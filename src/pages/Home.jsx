@@ -2,43 +2,46 @@ import React from "react";
 import Header from "../components/Header";
 import { usePizzas } from "../context/PizzaContext";
 import { useCart } from "../context/CartContext";
+import CardPizza from "../components/CardPizza";
 
 const Home = () => {
   const { pizzas, loading, error } = usePizzas();
   const { addToCart } = useCart();
 
-  if (loading) return <p>Cargando pizzas...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading)
+    return <div className="text-center mt-5">Cargando pizzas...</div>;
+  if (error)
+    return (
+      <div className="text-center mt-5 text-danger">
+        Error al cargar pizzas.
+      </div>
+    );
 
   return (
-    <div className="container-fluid text-center min-vh-100 d-flex flex-column px-0">
-      <Header />
-      <div className="row w-100 justify-content-center mt-5 mb-5">
-        <div className="col-12 d-flex justify-content-center flex-wrap gap-3">
+    <>
+      <Header /> {/* Agregamos el Header aquí */}
+      <div className="container mt-4">
+        <h1 className="text-center mb-4">¡Bienvenido a Pizzería Mamma Mía!</h1>
+
+        <div className="row justify-content-center g-4">
           {pizzas.map((pizza) => (
-            <div key={pizza.id} className="card" style={{ width: "18rem" }}>
-              <img src={pizza.img} className="card-img-top" alt={pizza.name} />
-              <div className="card-body">
-                <h5 className="card-title">{pizza.name}</h5>
-                <p className="card-text">Precio: ${pizza.price}</p>
-                <p>
-                  <strong>Ingredientes:</strong> {pizza.ingredients.join(", ")}
-                </p>
-                <p>
-                  <strong>Descripción:</strong> {pizza.desc}
-                </p>
-                <button
-                  onClick={() => addToCart(pizza)}
-                  className="btn btn-primary"
-                >
-                  Añadir al carrito
-                </button>
-              </div>
+            <div
+              className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+              key={pizza.id}
+            >
+              <CardPizza
+                id={pizza.id}
+                name={pizza.name}
+                price={pizza.price}
+                ingredients={pizza.ingredients}
+                img={pizza.img}
+                onAddToCart={addToCart}
+              />
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

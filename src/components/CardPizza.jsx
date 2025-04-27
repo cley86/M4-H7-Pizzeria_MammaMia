@@ -1,7 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CardPizza = ({ id, name, price, ingredients, img, onAddToCart }) => {
+  const navigate = useNavigate(); // ✅ hook para redirigir
+
+  const handleNavigate = () => {
+    navigate(`/pizza/${id}`); // ✅ ruta dinámica
+  };
+
   return (
     <div className="card shadow" style={{ width: "20rem" }}>
       <img src={img} className="card-img-top" alt={name} />
@@ -23,9 +29,9 @@ const CardPizza = ({ id, name, price, ingredients, img, onAddToCart }) => {
             Precio: ${price.toLocaleString()}
           </p>
           <div className="d-flex justify-content-between">
-            <Link to={`/pizza/${id}`} className="btn btn-primary">
+            <button className="btn btn-primary" onClick={handleNavigate}>
               Ver más
-            </Link>
+            </button>
             <button
               className="btn btn-success"
               onClick={() => onAddToCart({ id, name, price, img })}
